@@ -9,6 +9,7 @@ import "../css/semantic.min.css";
 import "prismjs/themes/prism-okaidia.css";
 import { Provider } from "react-redux";
 import { store } from "../store";
+import {pathPrefix} from '../../gatsby-config.js'
 
 export const menuItems = [
   { name: "Home", path: "/", exact: true, icon: "home", inverted: true },
@@ -25,7 +26,7 @@ export interface LayoutProps {
 
 const Layout = (props: LayoutProps) => {
   const { pathname } = props.location;
-  const isHome = pathname === "/";
+  const isHome = pathname === "/" || pathname === `${pathPrefix}/`;
 
   return (
     <Provider store={store}>
