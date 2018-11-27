@@ -82,5 +82,5 @@ module.exports = {
     // site!
     `gatsby-plugin-offline`
   ],
-  pathPrefix: '/otto-project'
+  pathPrefix: '/'
 };
