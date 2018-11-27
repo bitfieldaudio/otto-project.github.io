@@ -7,6 +7,7 @@
   "scripts": {
     "start": "gatsby develop",
     "develop": "gatsby develop",
+    "deploy": "gatsby build --prefix-paths && gh-pages -d public",
     "build": "gatsby build",
     "lint": "npm run lint:ts && npm run lint:md && npm run lint:js && npm run lint:css",
     "lint:ts": "tslint \"./src/**/*.ts\" \"./src/**/*.tsx\"",
@@ -86,6 +87,7 @@
     "eslint-config-xo-react": "0.11.1",
     "eslint-plugin-react": "6.10.3",
     "flat": "^2.0.1",
+    "gh-pages": "^2.0.1",
     "husky": "0.13.3",
     "jest": "19.0.2",
     "lint-staged": "3.4.0",
