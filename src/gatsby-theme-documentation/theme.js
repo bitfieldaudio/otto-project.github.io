@@ -23,14 +23,15 @@ export default {
     heading: 'rgb(36, 42, 49)',
     modes: {
       dark: {
-        text: '#fff',
+        text: '#d8d8d8',
         background: '#060606',
-        primary: '#3cf',
+        primary: '#e8524a',
         secondary: '#e0f',
         muted: '#191919',
         highlight: '#ffffcc',
         gray: '#999',
         purple: '#f6c',
+        heading: '#f1f1f1',
       },
     },
   },
