@@ -49,6 +49,22 @@ module.exports = options => {
           path: contentPath,
           name: contentPath
         }
+      },
+      {
+        resolve: `gatsby-plugin-prefetch-google-fonts`,
+        options: {
+          fonts: [
+            {
+              family: `Roboto`,
+              subsets: [`latin`],
+              variants: [`400`, `700`],
+            },
+            {
+              family: `Source Code Pro`,
+              variants: [`400`, `700`],
+            },
+          ],
+        },
       }
     ]
       .filter(Boolean)
