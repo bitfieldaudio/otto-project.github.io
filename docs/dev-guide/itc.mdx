@@ -28,6 +28,7 @@ One can check whether a class `T` is an action reciever for the action `A` using
 
 ## Action handlers
 Specific actions are handled in the recievers by _action handlers_ (the terminology isn't terribly important). They are member functions of the _action reciever_, which are called `action`, and take the type of the action (`A`) as the first parameter, and the actions arguments (`B`) as the following parameters. 
+
 ```cpp
 void action(Actions::rotation_variable, std::atomic<float>& v) noexcept;
 //          ~~~~~~~~~~~ A ~~~~~~~~~~~~  ~~~~~~~~~ B ~~~~~~~~~ 

@@ -1,24 +1,27 @@
 {
   "private": true,
-  "name": "otto-documentation",
-  "version": "0.0.1",
   "scripts": {
-    "start": "gatsby develop",
     "build": "gatsby build",
+    "clean": "gatsby clean",
+    "docs": "gatsby develop",
+    "test": "yarn build",
     "deploy": "gatsby build && gh-pages -d public -b master",
     "travis-deploy": "gatsby build --prefix-paths && gh-pages -d public -b master -r https://$GH_TOKEN@github.com/otto-project/otto-project.github.io.git"
   },
-  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
   "dependencies": {
-    "gatsby": "^2.15.24",
-    "gatsby-plugin-sharp": "^2.2.36",
-    "gatsby-remark-images": "^3.1.28",
-    "gatsby-theme-documentation": "^0.0.27",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-syntax-highlighter": "^11.0.2"
+    "gatsby": "2.15.29",
+    "lerna": "3.16.4",
+    "react": "16.10.2",
+    "react-dom": "16.10.2"
   },
   "devDependencies": {
     "gh-pages": "^2.1.1"
+  },
+  "resolutions": {
+    "react": "16.10.2",
+    "react-dom": "16.10.2"
   }
 }

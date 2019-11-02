@@ -1,0 +1,46 @@
+{
+  "name": "gatsby-theme-documentation",
+  "version": "0.0.27",
+  "author": "John Otander",
+  "license": "MIT",
+  "repository": "johno/gatsby-theme-documentation",
+  "keywords": [
+    "gatsby",
+    "gatsby-theme",
+    "gatsby-plugin"
+  ],
+  "dependencies": {
+    "@emotion/core": "10.0.22",
+    "@mdx-js/mdx": "1.5.1",
+    "@mdx-js/react": "1.5.1",
+    "@theme-ui/presets": "0.2.44",
+    "@theme-ui/prism": "0.2.46",
+    "@theme-ui/sidenav": "0.2.46",
+    "gatsby-plugin-mdx": "1.0.47",
+    "gatsby-plugin-meta-redirect": "1.1.1",
+    "gatsby-plugin-react-helmet": "3.1.10",
+    "gatsby-plugin-redirects": "1.0.0",
+    "gatsby-plugin-sharp": "^2.2.36",
+    "gatsby-plugin-theme-ui": "0.2.43",
+    "gatsby-remark-images": "^3.1.28",
+    "gatsby-remark-mermaid": "^1.2.0",
+    "gatsby-remark-prismjs": "^3.3.20",
+    "gatsby-source-filesystem": "2.1.29",
+    "is-absolute-url": "3.0.3",
+    "prismjs": "^1.17.1",
+    "react-helmet": "5.2.1",
+    "remark-emoji": "2.0.2",
+    "remark-slug": "5.1.2",
+    "theme-ui": "0.2.46"
+  },
+  "devDependencies": {
+    "gatsby": "2.15.29",
+    "react": "16.10.2",
+    "react-dom": "16.10.2"
+  },
+  "peerDependencies": {
+    "gatsby": "^2.15.24",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
+  }
+}
