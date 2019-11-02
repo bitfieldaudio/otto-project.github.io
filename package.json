@@ -3,8 +3,7 @@
   "scripts": {
     "build": "gatsby build",
     "clean": "gatsby clean",
-    "docs": "gatsby develop",
-    "test": "yarn build",
+    "develop": "gatsby develop",
     "deploy": "gatsby build && gh-pages -d public -b master",
     "travis-deploy": "gatsby build --prefix-paths && gh-pages -d public -b master -r https://$GH_TOKEN@github.com/otto-project/otto-project.github.io.git"
   },

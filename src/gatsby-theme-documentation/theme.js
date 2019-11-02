@@ -2,6 +2,7 @@ const heading = {
   fontFamily: 'heading',
   fontWeight: 'heading',
   lineHeight: 'heading',
+  color: 'heading',
   a: {
     color: 'inherit',
     textDecoration: 'none'
@@ -11,14 +12,15 @@ const heading = {
 export default {
   initialColorMode: 'light',
   colors: {
-    text: '#000',
+    text: '#3b454e',
     background: '#fff',
     primary: '#E53D34',
     secondary: '#119',
-    muted: '#f6f6f6',
+    muted: 'rgb(245, 247, 249)',
     highlight: '#ffffcc',
     gray: '#777',
-    purple: '#609',
+    purple: '#705',
+    heading: 'rgb(36, 42, 49)',
     modes: {
       dark: {
         text: '#fff',
@@ -28,14 +30,14 @@ export default {
         muted: '#191919',
         highlight: '#ffffcc',
         gray: '#999',
-        purple: '#c0f',
+        purple: '#f6c',
       },
     },
   },
   fonts: {
-    body: 'system-ui, sans-serif',
+    body: 'Content-font, Roboto, sans-serif',
     heading: 'inherit',
-    monospace: 'Menlo, monospace',
+    monospace: '"Source Code Pro", Menlo, monospace',
   },
   fontSizes: [12, 14, 16, 20, 24, 32, 48, 64, 72],
   fontWeights: {
@@ -43,14 +45,16 @@ export default {
     heading: '700',
   },
   lineHeights: {
-    body: 1.5,
+    body: 1.625,
     heading: 1.25,
+    code: 1.3,
   },
   textStyles: {
     heading,
     display: {
       variant: 'textStyles.heading',
       fontSize: [5, 6, 7],
+      color: 'heading',
       mt: 3,
     },
   },
@@ -97,6 +101,7 @@ export default {
       variant: 'prism',
       fontFamily: 'monospace',
       fontSize: 1,
+      lineHeight: 'code',
       p: 3,
       color: 'text',
       bg: 'muted',
@@ -104,16 +109,22 @@ export default {
       code: {
         color: 'inherit',
       },
+      borderRadius: '3px',
     },
     code: {
       fontFamily: 'monospace',
-      color: 'secondary',
+      color: 'text',
       fontSize: 1,
     },
     inlineCode: {
       fontFamily: 'monospace',
-      color: 'secondary',
+      color: 'text',
       bg: 'muted',
+      fontSize: 1,
+      py: '3px',
+      px: '6px',
+      mx: '1px',
+      borderRadius: '3px',
     },
     table: {
       width: '100%',
@@ -160,7 +171,7 @@ export default {
       color: 'gray',
     },
     '.comment': {
-      fontStyle: 'italic',
+      //fontStyle: 'italic',
     },
     [[
       '.property',
@@ -179,7 +190,7 @@ export default {
       color: 'purple',
     },
     [['.atrule', '.attr-value', '.keyword']]: {
-      color: 'primary',
+      color: '#07a',
     },
     [[
       '.selector',
