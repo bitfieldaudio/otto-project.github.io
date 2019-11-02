@@ -1,0 +1,39 @@
+# Inter-Thread Communication
+
+## Actions
+
+Actions are at the center of the inter-thread communication model used in OTTO. The are the "packages" that are sent between threads.
+
+An action is defined as a type alias to `itc::Action<Tag, Args...>` where `Tag` is a unique tag type per action, and `Args...` is an arbitrary number of arguments passed with the action.
+
+```cpp
+struct Actions {
+  /// Set the sample buffer.
+  /// Sent whenever the sample buffer should change.
+  /// @param buffer the location of the new sample data. Allocated from the audio pool.
+  using set_sample_buffer = itc::Action<struct set_sample_action, gsl::span<float>>;
+  //    ~~~~~~~ A ~~~~~~~               ~~~~~~~~~~~ B ~~~~~~~~~~  ~~~~~~~ C ~~~~~~
+};
+```
+
+In the action defined above, the action has the name (`A`) `set_sample_buffer`. The unusual syntax at `B` declares a tag type `set_sample_action`, which will never be defined. Since the tag type is only used to differentiate the action types, this type is never used for anything else
+
+User-defined actions are usually defined in an Actions struct in the engine namespace. 
+
+## Action Recievers
+
+Actions are recieved and handled by _action recievers_. These can be any class that specifies an _action handler_ for the given action. The most common examples of action recievers are the engine's `Audio` and `Screen` objects. These recieve information from the engine by recieving actions.
+
+One can check whether a class `T` is an action reciever for the action `A` using the type trait `itc::ActionReciever::is<T, A>`.
+
+## Action handlers
+Specific actions are handled in the recievers by _action handlers_ (the terminology isn't terribly important). They are member functions of the _action reciever_, which are called `action`, and take the type of the action (`A`) as the first parameter, and the actions arguments (`B`) as the following parameters. 
+```cpp
+void action(Actions::rotation_variable, std::atomic<float>& v) noexcept;
+//          ~~~~~~~~~~~ A ~~~~~~~~~~~~  ~~~~~~~~~ B ~~~~~~~~~ 
+void action(itc::prop_change<&Props::leslie>, float l) noexcept;
+//          ~~~~~~~~~~~~~~~~ D ~~~~~~~~~~~~~  ~~ B ~~
+```
+
+## ActionSender
+
