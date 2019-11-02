@@ -3,6 +3,7 @@ before_script:
   - npm install -g gatsby-cli
 node_js:
   - "10"
+script: echo "No build stage"
 deploy:
   provider: script
   # Note: change "docs" to the directory where your gatsby-site lives, if necessary
@@ -10,3 +11,7 @@ deploy:
   skip_cleanup: true
   on:
     branch: source
+cache:
+    yarn: true
+    directories:
+      - node_modules
