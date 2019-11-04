@@ -17,6 +17,7 @@ export default {
     primary: '#E53D34',
     secondary: '#119',
     muted: 'rgb(245, 247, 249)',
+    mutedText: 'rgb(193, 199, 205)',
     highlight: '#ffffcc',
     gray: '#777',
     purple: '#705',
@@ -28,6 +29,7 @@ export default {
         primary: '#e8524a',
         secondary: '#e0f',
         muted: '#191919',
+        mutedText: '#4a4a4a',
         highlight: '#ffffcc',
         gray: '#999',
         purple: '#f6c',
@@ -100,17 +102,6 @@ export default {
     },
     pre: {
       variant: 'prism',
-      fontFamily: 'monospace',
-      fontSize: 1,
-      lineHeight: 'code',
-      p: 3,
-      color: 'text',
-      bg: 'muted',
-      overflow: 'auto',
-      code: {
-        color: 'inherit',
-      },
-      borderRadius: '3px',
     },
     code: {
       fontFamily: 'monospace',
@@ -156,9 +147,20 @@ export default {
     },
     img: {
       maxWidth: '100%'
-    }
+    },
   },
   prism: {
+    fontFamily: 'monospace',
+    fontSize: 1,
+    lineHeight: 'code',
+    p: 3,
+    color: 'text',
+    overflow: 'auto',
+    code: {
+      color: 'inherit',
+    },
+    borderRadius: '3px',
+    bg: 'muted',
     [[
       '.comment',
       '.prolog',
@@ -203,5 +205,11 @@ export default {
     ]]: {
       color: 'secondary',
     },
+    '.react-syntax-highlighter-line-number': {
+      color: 'mutedText',
+      fontSize: '12px',
+      marginLeft: '1px',
+      marginRight: '5px',
+    }
   },
 }

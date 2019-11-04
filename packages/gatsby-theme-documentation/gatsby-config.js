@@ -23,12 +23,13 @@ module.exports = options => {
                   height: 1200
                 },
                 mermaidOptions: {
-                  themeCSS: `* {
+                  themeCSS: ` { background: white; } * {
                                     font-size: 14px;
                                     stroke-width: 1px;
                                     margin: 0;
                                     padding: 0;
-                                    font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+                                    font-family: "Source Code Pro", Menlo, monospace;
+
                                 }`
                 }
               }
