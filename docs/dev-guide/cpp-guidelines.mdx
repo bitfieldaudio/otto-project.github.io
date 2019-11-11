@@ -1,0 +1,39 @@
+C++ Guidelines
+==============
+
+## clang-format
+
+For consistent formatting, we use `clang-format`. The repo contains a `.clang-format` file, and `clang-format` should be run on every file before each commit. We recommend getting an integration for your editor, plugins should be available for most.
+
+In the future, we will set up CI to not accept incorrectly formatted code!
+
+## Doxygen documentation comments
+
+We strive to add doxygen-style documentation comments to all declarations. There _is_ an [auto-generated doxygen site](https://otto-project.github.io/OTTO/) for the latest develop branch, but the most important use of these comments is in-code documentation, and in-editor documentation popups. Our preferred documentation comment style is `///`, and `@` for doxygen commands:
+
+```cpp
+/// Triggers a new voice. 
+/// 
+/// @param midi_note base frequency.
+/// @param detune is multiplied on frequency
+/// @param legato controls legato on envelope + on_note_on. 
+///        If `true`, `on_note_on` will not be called.
+/// @param jump controls legato for portamento
+///        If `true`, portamento will not be applied.
+void trigger(int midi_note, float detune, float velocity, bool legato, bool jump) noexcept;
+```
+
+## `noexcept` everything on audio thread
+
+Everything on the audio thread _has_ to be `noexcept`, and in general, it should be used as much as possible. Get used to using `noexcept` by default, and only omitting it when explicitly using exceptions.
+
+## Range-based implementations of standard algorithms
+
+We have range-based implementations of all standard algorithms available in `util/algorithms.hpp`. These should be preferred over the iterator based versions whenever possible.
+
+```cpp
+auto found = util::find_if(voices, [&] (auto& v) { return v.midi_note() == note; });
+if (found != voices.end()) {
+  // do things
+}
+```

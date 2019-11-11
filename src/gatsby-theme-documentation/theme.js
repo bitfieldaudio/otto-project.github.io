@@ -56,7 +56,7 @@ export default {
     heading,
     display: {
       variant: 'textStyles.heading',
-      fontSize: [5, 6, 7],
+      fontSize: [3, 5, 6],
       color: 'heading',
       mt: 3,
     },
@@ -76,15 +76,15 @@ export default {
     },
     h2: {
       variant: 'textStyles.heading',
-      fontSize: 5,
+      fontSize: 4,
     },
     h3: {
       variant: 'textStyles.heading',
-      fontSize: 4,
+      fontSize: 3,
     },
     h4: {
       variant: 'textStyles.heading',
-      fontSize: 3,
+      fontSize: 2,
     },
     h5: {
       variant: 'textStyles.heading',

@@ -20,14 +20,14 @@ In the action defined above, the action has the name (`A`) `set_sample_buffer`. 
 
 User-defined actions are usually defined in an Actions struct in the engine namespace. 
 
-## Action Recievers
+## Action Receivers
 
-Actions are recieved and handled by _action recievers_. These can be any class that specifies an _action handler_ for the given action. The most common examples of action recievers are the engine's `Audio` and `Screen` objects. These recieve information from the engine by recieving actions.
+Actions are received and handled by _action receivers_. These can be any class that specifies an _action handler_ for the given action. The most common examples of action receivers are the engine's `Audio` and `Screen` objects. These receive information from the engine by receiving actions.
 
-One can check whether a class `T` is an action reciever for the action `A` using the type trait `itc::ActionReciever::is<T, A>`.
+One can check whether a class `T` is an action receiver for the action `A` using the type trait `itc::ActionReceiver::is<T, A>`.
 
 ## Action handlers
-Specific actions are handled in the recievers by _action handlers_ (the terminology isn't terribly important). They are member functions of the _action reciever_, which are called `action`, and take the type of the action (`A`) as the first parameter, and the actions arguments (`B`) as the following parameters. 
+Specific actions are handled in the receivers by _action handlers_ (the terminology isn't terribly important). They are member functions of the _action receiver_, which are called `action`, and take the type of the action (`A`) as the first parameter, and the actions arguments (`B`) as the following parameters. 
 
 ```cpp
 void action(Actions::rotation_variable, std::atomic<float>& v) noexcept;
@@ -36,9 +36,56 @@ void action(itc::prop_change<&Props::leslie>, float l) noexcept;
 //          ~~~~~~~~~~~~~~~~ D ~~~~~~~~~~~~~  ~~ B ~~
 ```
 
+Action handlers should not be called directly, but can be called using `itc::call_receiver(ar, Action::data(args...))`. This allows us to add other ways of defining action handlers in the future (for instance forwarding all actions to a subobject etc.). 
+
+## ActionQueue
+
+`itc::ActionQueue` is a concrete class, which is in essence just a thread-safe queue of function objects, which can be pushed to by one thread and executed by another. It then has a `push` function to help enqueue a function that calls an action handler, but usually you don't need to interact with it.
+
+When using the framework, you will mostly notice two `ActionQueue`s, the _graphics queue_ and the _audio queue_. The _graphics queue_ is executed at the start of each frame, and is available as `UIManager::current().action_queue()`. The _audio_queue_ is executed at the start of each buffer, and is available as `AudioManager::current().action_queue()`.
+
+Once again, in normal use, you will not need to interact with the queues directly, but it is nice to know of their existence.
+
 ## ActionSender
 
-```mermaid
-sequenceDiagram
-ActionSender->>ActionReciever: action::data()
+The `ActionSender`s is how you send actions to be executed on a another thread, i.e., push them to an `ActionQueue`. The most important thing to know, is that the `ActionSender` needs to know the addresses of the `ActionReceiver`s it sends to. This is because the actual lambda which invokes `call_receiver` and calls the action handler, is constructed on the sender side, and is then pushed into the queue. This is first of all because the sending side is in our case the logic thread, which is where we have the most resources available, and secondly, it means we only have to do type erasure once, for the function. Also, this gives the sender the power to see whether the action receiver actually implements a handler, and then do nothing in case it doesn't.
+
+`itc::ActionSender<Ar...>` is a class template, which takes the receivers the sender sends actions to. Its constructor takes a `queue`, and then references to the receivers.
+
+Since `ActionSender`s are per queue, engines need a `GraphicsSndr` and an `AudioSndr`. To avoid having to use these separately, they can be used as a single ActionSender, by joining them using `itc::JoinedActionSender`. Calling `.push` on this, will call `.push` on each sender it is given.
+
+### Example
+
+```cpp
+// In otto::engines::some_synth in src/engines/synth/some_synth/some_synth.hpp
+
+struct Screen;
+using GraphicsSndr = itc::ActionSender<Screen, voices::EnvelopeScreen>;
+
+struct Audio;
+using AudioSndr = itc::ActionSender<Audio>;
+
+using Sndr = itc::JoinedActionSender<GraphicsSndr, AudioSndr>;
+
+struct Engine : core::engine::SynthEngine<Engine> {
+  // ...
+private:
+  GraphicsSndr graphics_sndr_;
+  AudioSndr audio_sndr_;
+  Sndr sndr_ = {graphics_sndr_, audio_sndr_};
+  // ...
+};
+
+// Engine constructor, defined in some_synth.cpp file
+
+SynthEngine::SynthEngine()
+  : screen(std::make_unique<Screen>()), 
+    envelope_screen(std::make_unique<voices::EnvelopeScreen>()),
+    audio(std::make_unique<Audio>()),
+    graphics_sndr_(services::UIManager::current().make_sndr(*screen, envelope_screen)),
+    audio_sndr_(services::AudioManager::current().make_sndr(*audio))
+{
+  // Send an action using the sender
+  sndr_.push(Actions::rotation_variable::data(rotation_));
+}
 ```
