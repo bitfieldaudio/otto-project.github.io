@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
-    title: 'gatsby-theme-documentation',
-    description: 'Minimal Gatsby Theme for documentation websites'
+    title: 'OTTO Documentation',
+    // description: ''
   },
   plugins: [
     'gatsby-theme-documentation'
