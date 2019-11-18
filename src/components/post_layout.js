@@ -4,7 +4,7 @@ import { Global } from '@emotion/core'
 import { Styled, Layout, Main, Container, jsx, useThemeUI } from 'theme-ui'
 
 import Header from './header'
-import Sidenav from './sidenav'
+//import Sidenav from './sidenav'
 
 export default ({ children }) => {
   const { theme: { colors = {} } } = useThemeUI()
@@ -33,13 +33,13 @@ export default ({ children }) => {
                 mx: -3,
               }}
             >
-              <Sidenav
+              {/*<Sidenav
                 open={menuOpen}
                 sx={{ display: [null, 'block'] }}
                 onFocus={() => setMenuOpen(true)}
                 onBlur={() => setMenuOpen(false)}
                 onClick={() => setMenuOpen(false)}
-              />
+              />*/}
               <div
                 sx={{
                   overflow: 'hidden',

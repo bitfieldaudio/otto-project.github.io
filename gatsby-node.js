@@ -3,9 +3,11 @@ const path = require(`path`)
 const { joinPath } = require(`gatsby-core-utils`)
 
 let basePath
-let contentPath
+let docsPath
+let postsPath
 
 const DocTemplate = require.resolve('./src/templates/doc')
+const PostTemplate = require.resolve('./src/templates/post')
 
 const mdxResolverPassthrough = fieldName => async (
   source,
@@ -26,9 +28,25 @@ const mdxResolverPassthrough = fieldName => async (
   return result
 }
 
+const mdxFindTitle = async (source, args, context, info) => {
+  if (source.title.length > 0) return source.title;
+  const type = info.schema.getType(`Mdx`)
+  const mdxNode = context.nodeModel.getNodeById({
+    id: source.parent,
+  })
+
+  const resolver = type.getFields()['headings'].resolve
+  const result = await resolver(mdxNode, args, context, { fieldName: `headings` })
+
+  if (!result || !result[0]) return "";
+
+  return result[0]['value'];
+}
+
 exports.onPreBootstrap = (_, themeOptions) => {
   basePath = themeOptions.basePath || `/`
-  contentPath = themeOptions.contentPath || `docs`
+  docsPath = themeOptions.docsPath || `docs`
+  postsPath = themeOptions.postsPath || `posts`
 }
 
 exports.sourceNodes = ({ actions, schema }) => {
@@ -39,7 +57,37 @@ exports.sourceNodes = ({ actions, schema }) => {
       name: `Docs`,
       fields: {
         id: { type: `ID!` },
-        title: { type: `String!`, },
+        title: { type: `String!`, resolve: mdxFindTitle },
+        description: { type: `String`, },
+        slug: { type: `String!`, },
+        headings: {
+          type: `[MdxHeadingMdx!]`,
+          resolve: mdxResolverPassthrough(`headings`),
+        },
+        excerpt: {
+          type: `String!`,
+          args: {
+            pruneLength: {
+              type: `Int`,
+              defaultValue: 140,
+            },
+          },
+          resolve: mdxResolverPassthrough(`excerpt`),
+        },
+        body: {
+          type: `String!`,
+          resolve: mdxResolverPassthrough(`body`),
+        },
+      },
+      interfaces: [`Node`],
+    }))
+  createTypes(
+    schema.buildObjectType({
+      name: `Posts`,
+      fields: {
+        id: { type: `ID!` },
+        title: { type: `String!`, resolve: mdxFindTitle },
+        date: { type: `Date`, },
         description: { type: `String`, },
         slug: { type: `String!`, },
         headings: {
@@ -72,19 +120,21 @@ exports.onCreateNode = async ({ node, actions, getNode, createNodeId }) => {
   const isReadme = name => /readme/i.test(name)
   const isIndexPath = name => name === 'index' || isReadme(name)
 
-  const toOriginalDocsPath = node => {
+  const toOriginalDocsPath = (node, type) => {
     const { dir } = path.parse(node.relativePath)
     const fullPath = [
       basePath,
+      type.toLowerCase(),
       dir,
       node.name
     ]
     return joinPath(...fullPath).replace(/\\+/g, ``)
   }
-  const toDocsPath = node => {
+  const toDocsPath = (node, type) => {
     const { dir } = path.parse(node.relativePath)
     const fullPath = [
       basePath,
+      type.toLowerCase(),
       dir,
       !isIndexPath(node.name) && node.name
     ].filter(Boolean)
@@ -96,29 +146,32 @@ exports.onCreateNode = async ({ node, actions, getNode, createNodeId }) => {
     return
   }
 
-  // Create source field (according to contentPath)
+  // Create source field (according to docsPath)
   const fileNode = getNode(node.parent)
   const source = fileNode.sourceInstanceName
 
-  if (node.internal.type === `Mdx` && source === contentPath) {
-    const slug = toDocsPath(fileNode)
+  if (source === docsPath || source == postsPath) {
+
+    const type = source == docsPath && 'Docs' || 'Posts';
+    const slug = toDocsPath(fileNode, type)
 
     // Redirect file/path/readme to file/path/ in order to handle
     // potential links that are meant to work with GitHub-style index
     // pages.
     if (isReadme(fileNode.name)) {
       createRedirect({
-        fromPath: toOriginalDocsPath(fileNode),
-        toPath: toDocsPath(fileNode),
+        fromPath: toOriginalDocsPath(fileNode, type),
+        toPath: toDocsPath(fileNode, type),
         isPermanent: true
       })
     }
 
     const title = node.frontmatter.title
+    const date = node.frontmatter.date
     const description = node.frontmatter.description
 
-    const fieldData = { title, description, slug }
-    const mdxDocId = createNodeId(`${node.id} >>> Docs`)
+    const fieldData = { title, description, slug, date }
+    const mdxDocId = createNodeId(`${node.id} >>> ${type}`)
 
     await createNode({
       ...fieldData,
@@ -126,13 +179,13 @@ exports.onCreateNode = async ({ node, actions, getNode, createNodeId }) => {
       parent: node.id,
       children: [],
       internal: {
-        type: `Docs`,
+        type: type,
         contentDigest: crypto
           .createHash(`md5`)
           .update(JSON.stringify(fieldData))
           .digest(`hex`),
         content: JSON.stringify(fieldData),
-        description: `Docs`,
+        description: type,
       },
     })
 
@@ -161,7 +214,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const docs = result.data.docs.nodes
 
   docs.forEach((doc, index) => {
-    const previous = index === docs.length - 1 ? null : docs[index + 1]
+    const prev = index === docs.length - 1 ? null : docs[index + 1]
     const next = index === 0 ? null : docs[index - 1]
     const { slug } = doc
 
@@ -170,7 +223,41 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       component: DocTemplate,
       context: {
         ...doc,
-        previous,
+        prev,
+        next,
+      },
+    })
+  })
+
+  const postsResult = await graphql(`
+    {
+      posts: allPosts(sort: { fields: date, order: DESC }) {
+        nodes {
+          id
+          slug
+          title
+        }
+      }
+    }
+  `)
+
+  if (postsResult.errors) {
+    reporter.panic(postsResult.errors)
+  }
+
+  const posts = postsResult.data.posts.nodes
+
+  posts.forEach((post, index) => {
+    const prev = index === 0 ? null : posts[index - 1]
+    const next = index === posts.length - 1 ? null : posts[index + 1]
+    const { slug } = post
+
+    createPage({
+      path: slug,
+      component: PostTemplate,
+      context: {
+        ...post,
+        prev,
         next,
       },
     })

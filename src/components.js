@@ -1,9 +1,10 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui'
-import React from 'react'
-import PrismCodeBlock from '@theme-ui/prism'
+//import React from 'react'
+//import PrismCodeBlock from '@theme-ui/prism'
 import { Prism } from 'react-syntax-highlighter';
 import theme from './theme.js'
+import Blog from './components/blog'
 
 const getLang = (className) => {
   var arr = className.match(/(?<=language-)\w+/) || [""];
@@ -17,5 +18,6 @@ export default {
                         style={{ "pre[class*=\"language-\"]": {background: "" } }}
                         showLineNumbers={ true }
                         language={ getLang(props.className) }
-                        children={ props.children } />
+                        children={ props.children } />,
+  Blog,
 }
