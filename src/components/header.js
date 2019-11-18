@@ -7,7 +7,7 @@ import NavLink from './nav-link'
 import Content from '../header.mdx'
 import Button from './button'
 
-const modes = ['light', 'dark', 'deep', 'swiss']
+const modes = ['light', 'dark']
 
 const components = {
   a: NavLink
@@ -55,12 +55,12 @@ export default ({ menuOpen, setMenuOpen, nav }) => {
               <Content />
             </MDXProvider>
             <Button
-              sx={{
-                ml: 2,
-              }}
-              onClick={cycleMode}>
-              {mode}
-            </Button>
+               sx={{
+                 ml: 2,
+               }}
+               onClick={cycleMode}>
+               {mode}
+             </Button>
           </Flex>
         </Flex>
       </Container>

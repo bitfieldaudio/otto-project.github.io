@@ -2,6 +2,7 @@ const heading = {
   fontFamily: 'heading',
   fontWeight: 'heading',
   lineHeight: 'heading',
+  color: 'heading',
   a: {
     color: 'inherit',
     textDecoration: 'none'
@@ -11,49 +12,35 @@ const heading = {
 export default {
   initialColorMode: 'light',
   colors: {
-    text: '#000',
+    text: '#3b454e',
     background: '#fff',
-    primary: '#33e',
+    primary: '#E53D34',
     secondary: '#119',
-    muted: '#f6f6f6',
+    muted: 'rgb(245, 247, 249)',
+    mutedText: 'rgb(193, 199, 205)',
     highlight: '#ffffcc',
     gray: '#777',
-    purple: '#609',
+    purple: '#705',
+    heading: 'rgb(36, 42, 49)',
     modes: {
       dark: {
-        text: '#fff',
+        text: '#d8d8d8',
         background: '#060606',
-        primary: '#3cf',
+        primary: '#e8524a',
         secondary: '#e0f',
         muted: '#191919',
+        mutedText: '#4a4a4a',
         highlight: '#ffffcc',
         gray: '#999',
-        purple: '#c0f',
-      },
-      deep: {
-        text: 'hsl(210, 50%, 96%)',
-        background: 'hsl(230, 25%, 18%)',
-        primary: 'hsl(260, 100%, 80%)',
-        secondary: 'hsl(290, 100%, 80%)',
-        purple: 'hsl(290, 100%, 80%)',
-        muted: 'hsla(230, 20%, 0%, 20%)',
-        gray: 'hsl(210, 50%, 60%)',
-      },
-      swiss: {
-        text: 'hsl(10, 20%, 20%)',
-        background: 'hsl(10, 10%, 98%)',
-        primary: 'hsl(10, 80%, 50%)',
-        secondary: 'hsl(10, 60%, 50%)',
-        purple: 'hsl(250, 60%, 30%)',
-        muted: 'hsl(10, 20%, 94%)',
-        gray: 'hsl(10, 20%, 50%)',
+        purple: '#f6c',
+        heading: '#f1f1f1',
       },
     },
   },
   fonts: {
-    body: 'system-ui, sans-serif',
+    body: 'Content-font, Roboto, sans-serif',
     heading: 'inherit',
-    monospace: 'Menlo, monospace',
+    monospace: '"Source Code Pro", Menlo, monospace',
   },
   fontSizes: [12, 14, 16, 20, 24, 32, 48, 64, 72],
   fontWeights: {
@@ -61,14 +48,16 @@ export default {
     heading: '700',
   },
   lineHeights: {
-    body: 1.5,
+    body: 1.625,
     heading: 1.25,
+    code: 1.3,
   },
   textStyles: {
     heading,
     display: {
       variant: 'textStyles.heading',
-      fontSize: [5, 6, 7],
+      fontSize: [3, 5, 6],
+      color: 'heading',
       mt: 3,
     },
   },
@@ -87,15 +76,15 @@ export default {
     },
     h2: {
       variant: 'textStyles.heading',
-      fontSize: 5,
+      fontSize: 4,
     },
     h3: {
       variant: 'textStyles.heading',
-      fontSize: 4,
+      fontSize: 3,
     },
     h4: {
       variant: 'textStyles.heading',
-      fontSize: 3,
+      fontSize: 2,
     },
     h5: {
       variant: 'textStyles.heading',
@@ -113,25 +102,21 @@ export default {
     },
     pre: {
       variant: 'prism',
-      fontFamily: 'monospace',
-      fontSize: 1,
-      p: 3,
-      color: 'text',
-      bg: 'muted',
-      overflow: 'auto',
-      code: {
-        color: 'inherit',
-      },
     },
     code: {
       fontFamily: 'monospace',
-      color: 'secondary',
+      color: 'text',
       fontSize: 1,
     },
     inlineCode: {
       fontFamily: 'monospace',
-      color: 'secondary',
+      color: 'text',
       bg: 'muted',
+      fontSize: 1,
+      py: '3px',
+      px: '6px',
+      mx: '1px',
+      borderRadius: '3px',
     },
     table: {
       width: '100%',
@@ -159,9 +144,23 @@ export default {
       border: 0,
       borderBottom: '1px solid',
       borderColor: 'muted',
-    }
+    },
+    img: {
+      maxWidth: '100%'
+    },
   },
   prism: {
+    fontFamily: 'monospace',
+    fontSize: 1,
+    lineHeight: 'code',
+    p: 3,
+    color: 'text',
+    overflow: 'auto',
+    code: {
+      color: 'inherit',
+    },
+    borderRadius: '3px',
+    bg: 'muted',
     [[
       '.comment',
       '.prolog',
@@ -175,7 +174,7 @@ export default {
       color: 'gray',
     },
     '.comment': {
-      fontStyle: 'italic',
+      //fontStyle: 'italic',
     },
     [[
       '.property',
@@ -194,7 +193,7 @@ export default {
       color: 'purple',
     },
     [['.atrule', '.attr-value', '.keyword']]: {
-      color: 'primary',
+      color: '#07a',
     },
     [[
       '.selector',
@@ -206,5 +205,11 @@ export default {
     ]]: {
       color: 'secondary',
     },
+    '.react-syntax-highlighter-line-number': {
+      color: 'mutedText',
+      fontSize: '12px',
+      marginLeft: '1px',
+      marginRight: '5px',
+    }
   },
 }
