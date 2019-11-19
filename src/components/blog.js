@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { StaticQuery, graphql } from "gatsby"
 import { jsx } from 'theme-ui'
+import YouTube from './youtube'
 
 const linkStyle = {
   textDecoration: 'none',
@@ -8,11 +9,16 @@ const linkStyle = {
   display: 'block',
 }
 
-const blockStyle = {
+const wrapperStyle = {
   backgroundColor: 'muted',
-  p: '16px',
   marginBottom: '32px',
-  borderRadius: '3px',
+  borderRadius: '5px',
+  color: 'text',
+  overflow: 'hidden',
+}
+
+const blockStyle = {
+  p: '16px',
   color: 'text',
 }
 
@@ -34,10 +40,13 @@ const BlogPost = (props) => {
   const post = props.node
   return (
   <a sx={linkStyle} href={post.slug}>
-    <div sx={blockStyle} >
-      <div sx={dateStyle}>{ post.date }</div>
-      <h1 sx={titleStyle} >{ post.title }</h1>
-      { post.excerpt && <div sx={excerptStyle}>{ post.excerpt }</div> }
+    <div sx={wrapperStyle} >
+      { post.featuredVideo && <YouTube videoId={post.featuredVideo}/> }
+      <div sx={blockStyle} >
+        <div sx={dateStyle}>{ post.date }</div>
+        <h1 sx={titleStyle} >{ post.title }</h1>
+        { post.excerpt && <div sx={excerptStyle}>{ post.excerpt }</div> }
+      </div>
     </div>
   </a>)
 }
@@ -56,6 +65,7 @@ const query = graphql`
       title
       date(formatString: "dddd, MMMM Do YYYY")
       excerpt
+      featuredVideo
     }
   }
 }

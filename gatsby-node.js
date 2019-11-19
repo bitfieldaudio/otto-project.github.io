@@ -8,6 +8,7 @@ let postsPath
 
 const DocTemplate = require.resolve('./src/templates/doc')
 const PostTemplate = require.resolve('./src/templates/post')
+const RedirectTemplate = require.resolve('./src/templates/redirect')
 
 const mdxResolverPassthrough = fieldName => async (
   source,
@@ -90,6 +91,7 @@ exports.sourceNodes = ({ actions, schema }) => {
         date: { type: `Date`, },
         description: { type: `String`, },
         slug: { type: `String!`, },
+        featuredVideo: { type: `String`, },
         headings: {
           type: `[MdxHeadingMdx!]`,
           resolve: mdxResolverPassthrough(`headings`),
@@ -169,8 +171,9 @@ exports.onCreateNode = async ({ node, actions, getNode, createNodeId }) => {
     const title = node.frontmatter.title
     const date = node.frontmatter.date
     const description = node.frontmatter.description
+    const featuredVideo = node.frontmatter.featuredVideo
 
-    const fieldData = { title, description, slug, date }
+    const fieldData = { title, description, slug, date, featuredVideo }
     const mdxDocId = createNodeId(`${node.id} >>> ${type}`)
 
     await createNode({
@@ -194,7 +197,7 @@ exports.onCreateNode = async ({ node, actions, getNode, createNodeId }) => {
 }
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
-  const { createPage } = actions
+  const { createPage, createRedirect } = actions
 
   const result = await graphql(`
     {
@@ -231,7 +234,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   const postsResult = await graphql(`
     {
-      posts: allPosts(sort: { fields: date, order: DESC }) {
+      posts: allPosts(sort: { fields: date, order: ASC }) {
         nodes {
           id
           slug
@@ -262,6 +265,21 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       },
     })
   })
+
+  const createRedirectPage = (from, to) => {
+    createPage({
+      path: from,
+      component: RedirectTemplate,
+      context: {
+        from,
+        to
+      }
+    })
+  }
+
+  createRedirectPage('/discord', 'https://discord.gg/4cV9Ucz')
+  createRedirectPage('/patreon', 'https://patreon.com/ottosynthesizer')
+  createRedirectPage('/github', 'https://github.com/otto-project/otto')
 }
 
 exports.onCreateWebpackConfig = ({ actions }) => {

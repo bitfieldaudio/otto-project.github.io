@@ -7,7 +7,6 @@ module.exports = {
     'gatsby-plugin-meta-redirect',
     'gatsby-plugin-theme-ui',
     'gatsby-plugin-react-helmet',
-    'gatsby-plugin-redirects',
     {
       resolve: 'gatsby-plugin-mdx',
       options: {
@@ -74,6 +73,6 @@ module.exports = {
           },
         ],
       },
-    }
+    },
   ]
 }
