@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui'
 import { Prism } from 'react-syntax-highlighter';
-import ReactYouTube from 'react-youtube'
 
 const opts = {
   width: '100%',
@@ -22,7 +21,10 @@ const wrapperStyle = {
 }
 
 const YouTube = props => (<div sx={wrapperStyle}>
-  <ReactYouTube opts={opts} {...props}/>
+  <iframe width="100%" height="100%" src={"https://www.youtube.com/embed/" + props.videoId}
+         frameborder="0"
+         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+         allowfullscreen />
 </div>)
 
 export default YouTube
