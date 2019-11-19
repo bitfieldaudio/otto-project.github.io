@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui'
 import { Prism } from 'react-syntax-highlighter';
+import theme from '../theme.js'
 
 const opts = {
   width: '100%',
@@ -17,7 +18,8 @@ const wrapperStyle = {
     left: '0',
     width: '100%',
     height: '100%'
-  }
+  },
+  ...theme.styles.YouTube
 }
 
 const YouTube = props => (<div sx={wrapperStyle}>

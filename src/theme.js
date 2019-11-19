@@ -65,6 +65,13 @@ export default {
     Container: {
       p: 3,
       maxWidth: 1024,
+      "&.content": {
+        maxWidth: 720,
+      },
+    },
+    YouTube: {
+      borderRadius: '4px',
+      overflow: 'hidden',
     },
     root: {
       fontFamily: 'body',

@@ -25,7 +25,7 @@ export default ({ children }) => {
       <Layout>
         <Header nav={nav} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
         <Main>
-          <Container py={0} px={3}>
+          <Container className="content" py={0} px={3}>
             <div
               ref={nav}
               sx={{
