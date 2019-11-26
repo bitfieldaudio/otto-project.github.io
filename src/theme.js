@@ -66,7 +66,7 @@ export default {
       p: 3,
       maxWidth: 1024,
       "&.content": {
-        maxWidth: 720,
+        maxWidth: 750,
       },
     },
     YouTube: {
