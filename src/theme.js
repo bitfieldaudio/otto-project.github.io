@@ -157,6 +157,10 @@ export default {
       maxWidth: '100%',
       borderRadius: '4px',
     },
+    '.gatsby-resp-image-background-image': {
+      borderRadius: '4px',
+      overflow: 'hidden',
+    }
   },
   prism: {
     fontFamily: 'monospace',

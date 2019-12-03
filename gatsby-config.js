@@ -41,7 +41,7 @@ module.exports = {
             resolve: 'gatsby-remark-images',
             options: {
               maxWidth: 1035,
-              sizeByPixelDensity: true,
+              wrapperStyle: 'overflow: hidden; border-radius: 4px',
             },
           },
         ],
