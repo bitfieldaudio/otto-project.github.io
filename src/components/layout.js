@@ -44,7 +44,7 @@ export default ({ children }) => {
                 sx={{
                   overflow: 'hidden',
                   px: 3,
-                  width: '100%',
+                  //width: '100%',
                 }}
               >
                 {children}

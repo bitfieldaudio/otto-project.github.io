@@ -197,7 +197,10 @@ export const AccordionNav = React.forwardRef(
               m: 0,
             }}>
             {links.map((link, i) => {
-              if (link.props.links.some((l, j) => l.props.href == pathname)) expanded[i] = true
+              if (link.props.href === pathname ||
+                  link.props.links.some((l, j) => l.props.href === pathname)) {
+                expanded[i] = true
+              }
               return (
                 <li key={i}>
                   <div

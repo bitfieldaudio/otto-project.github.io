@@ -280,6 +280,14 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   createRedirectPage('/discord', 'https://discord.gg/4cV9Ucz')
   createRedirectPage('/patreon', 'https://patreon.com/ottosynthesizer')
   createRedirectPage('/github', 'https://github.com/otto-project/otto')
+  createRedirectPage('/instagram', 'https://instagram.com/ottosynthesizer')
+
+  createRedirect({
+        fromPath: '/',
+        toPath: '/docs/',
+        isPermanent: true,
+        redirectInBrowser: true,
+      })
 }
 
 exports.onCreateWebpackConfig = ({ actions }) => {

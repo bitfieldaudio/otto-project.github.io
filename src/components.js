@@ -5,6 +5,7 @@ import { Prism } from 'react-syntax-highlighter';
 import theme from './theme.js'
 import Blog from './components/blog'
 import YouTube from './components/youtube'
+import Icon from './components/Icon.js'
 
 const getLang = (className) => {
   var arr = className.match(/(?<=language-)\w+/) || [""];
@@ -22,4 +23,5 @@ export default {
   code: CodeHl,
   Blog,
   YouTube,
+  Icon,
 }

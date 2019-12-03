@@ -1,12 +1,6 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui'
-import { Prism } from 'react-syntax-highlighter';
 import theme from '../theme.js'
-
-const opts = {
-  width: '100%',
-  height: '100%',
-}
 
 const wrapperStyle = {
   position: 'relative',
@@ -23,7 +17,7 @@ const wrapperStyle = {
 }
 
 const YouTube = props => (<div sx={wrapperStyle}>
-  <iframe width="100%" height="100%" src={"https://www.youtube.com/embed/" + props.videoId}
+  <iframe title={props.videoId} width="100%" height="100%" src={"https://www.youtube.com/embed/" + props.videoId}
          frameborder="0"
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
          allowfullscreen />

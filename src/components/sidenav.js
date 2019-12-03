@@ -1,9 +1,8 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui'
 import { AccordionNav } from './sidenav-accordion'
-import { StaticQuery } from 'gatsby'
+import { StaticQuery, graphql } from 'gatsby'
 import NavLink from './nav-link'
-import { inspect } from 'util'
 import { Location } from '@reach/router'
 
 const makeTree = nodes => {
@@ -19,7 +18,7 @@ const makeTree = nodes => {
     var current = tree
     var treeNode = null;
     for (const part of node.path) {
-      treeNode = current.find(tn => tn.path == part)
+      treeNode = current.find(tn => tn.path === part)
       if (!treeNode) {
         treeNode = {
           path: part,
