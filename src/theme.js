@@ -155,7 +155,7 @@ export default {
     },
     img: {
       maxWidth: '100%',
-      borderRadius: '10px',
+      borderRadius: '4px',
     },
   },
   prism: {
