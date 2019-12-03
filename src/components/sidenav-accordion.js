@@ -20,7 +20,7 @@ const Overlay = ({ onClick }) => (
     <Global
       styles={css({
         body: {
-          overflow: ['hidden', 'auto'],
+          overflow: ['hidden', 'hidden', 'auto'],
         },
       })}
     />
@@ -175,20 +175,20 @@ export const AccordionNav = React.forwardRef(
           ref={ref}
           className={className}
           sx={{
-            position: ['fixed', 'sticky'],
+            position: ['fixed', 'fixed', 'sticky'],
             top: 0,
             left: 0,
-            bottom: [0, 'auto'],
+            bottom: [0, 0, 'auto'],
             zIndex: 1,
             minWidth: 0,
             width: 256,
-            maxHeight: ['100vh', 'none'],
+            maxHeight: ['100vh', '100vh', 'none'],
             overflowX: 'visible',
             overflowY: 'auto',
             WebkitOverflowScrolling: 'touch',
             transition: 'transform .2s ease-out',
-            transform: [open ? 'translateX(0)' : 'translate(-100%)', 'none'],
-            bg: ['background', 'transparent'],
+            transform: [open ? 'translateX(0)' : 'translate(-100%)', open ? 'translateX(0)' : 'translate(-100%)', 'none'],
+            bg: ['background', 'background', 'transparent'],
           }}>
           <ul
             sx={{

@@ -154,7 +154,8 @@ export default {
       borderColor: 'muted',
     },
     img: {
-      maxWidth: '100%'
+      maxWidth: '100%',
+      borderRadius: '10px',
     },
   },
   prism: {

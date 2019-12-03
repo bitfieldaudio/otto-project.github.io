@@ -35,7 +35,7 @@ export default props => (
       ':focus': {
         outline: '2px solid',
       },
-      '@media screen and (min-width: 40em)': {
+      '@media screen and (min-width: 52em)': {
         display: 'none',
       },
     }}

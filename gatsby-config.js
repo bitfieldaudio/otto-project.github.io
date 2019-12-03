@@ -12,6 +12,9 @@ module.exports = {
       options: {
         extensions: ['.mdx', '.md'],
         remarkPlugins: [require('remark-slug'), require('remark-emoji')],
+        plugins: [
+          'gatsby-remark-images'
+        ],
         gatsbyRemarkPlugins: [
           {
             resolve: `gatsby-remark-mermaid`,
@@ -57,6 +60,13 @@ module.exports = {
         path: `${__dirname}/posts`,
         name: 'posts'
       }
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `images`,
+        path: `${__dirname}/images`,
+      },
     },
     {
       resolve: `gatsby-plugin-prefetch-google-fonts`,

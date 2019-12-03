@@ -25,32 +25,49 @@ export default ({ children }) => {
       <Layout>
         <Header nav={nav} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
         <Main>
-          <Container py={0} px={3}>
             <div
               ref={nav}
               sx={{
-                display: ['block', 'flex'],
-                mx: -3,
+                display: ['block', 'block', 'flex'],
+                justifyContent: "center",
+                alignItems: "space-around",
+                //mx: -3,
               }}
             >
-              <Sidenav
-                open={menuOpen}
-                sx={{ display: [null, 'block'] }}
-                onFocus={() => setMenuOpen(true)}
-                onBlur={() => setMenuOpen(false)}
-                onClick={() => setMenuOpen(false)}
-              />
+              <div
+                sx={{
+                  display: [null, null, 'block'],
+                  flex: "0 0 256px",
+                  width: "256px"
+                }}>
+                <Sidenav
+                  open={menuOpen}
+                  onFocus={() => setMenuOpen(true)}
+                  onBlur={() => setMenuOpen(false)}
+                  onClick={() => setMenuOpen(false)}
+                />
+              </div>
               <div
                 sx={{
                   overflow: 'hidden',
                   px: 3,
+                  flex: "0 1 auto",
                   //width: '100%',
                 }}
               >
-                {children}
+                <Container py={0} px={3} sx={{
+                  }}>
+                  <div sx={{ width: '10000px' }}/>
+                  {children}
+                </Container>
               </div>
+              <div sx={{
+                display: 'none',
+                display: ['none', 'none', 'none', 'block'],
+                flex: "0 1 256px",
+                width: 256,
+              }}/>
             </div>
-          </Container>
         </Main>
       </Layout>
     </Styled.root>

@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui'
-import { Prism } from 'react-syntax-highlighter';
+import { Prism } from 'react-syntax-highlighter'
 
 import theme from './theme.js'
 import Blog from './components/blog'
@@ -18,10 +18,17 @@ const CodeHl = props => <Prism sx={ theme.prism }
                         showLineNumbers={ true }
                         language={ getLang(props.className) }
                         children={ props.children } />
+
+const PatreonBadge = props => (
+  <a href="https://www.patreon.com/bePatron?u=21164987" data-patreon-widget-type="become-patron-button">
+    <img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.herokuapp.com%2Fottosynthesizer&style=for-the-badge"/>
+  </a>);
+
 export default {
   pre: ({ children }) => children,
   code: CodeHl,
   Blog,
   YouTube,
   Icon,
+  PatreonBadge
 }
