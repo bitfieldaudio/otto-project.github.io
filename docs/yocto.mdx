@@ -1,0 +1,109 @@
+# OTTO Yocto Development
+
+The OTTO linux distro is built using yocto, and based on [poky](https://www.yoctoproject.org/software-item/poky/) . The root board support package is available on github [](https://github.com/otto-project/otto-bsp)
+
+## Description
+otto-bsp is intended to provide OTTO developers an easy to setup environment for OpenEmbedded/Yocto project development. This respository is set up with git submodules to link together all of the required BSP layers. In addition, a Vagrantfile is provided for those who do not already have Linux systems ready to quickly get started via a virtual machine.
+
+## Getting started without an existing Linux system
+If you do not already have a linux system available for development, you can use the supplied Vagrantfile. It will automatically set up an Ubuntu 18.10 based system with all the required dependencies and automatically download the source repository. You can download Vagrant from https://www.vagrantup.com/. If you would like to allocate more/less memory and CPU resources to the virtual machine, make sure to modify the `VM_MEMORY` and `VM_CORES` lines in the Vagrantfile prior to performing the `vagrant up` command.
+At the moment, Virtualbox is supported. It must be installed prior to running this command.
+```
+vagrant up --provider=virtualbox
+vagrant ssh
+```
+
+## Getting started with an existing Linux system
+If you already have a linux system available for development, the dependencies for development are as follows:
+```
+gawk wget git-core diffstat unzip texinfo gcc-multilib build-essential chrpath socat libsdl1.2-dev xterm repo
+```
+
+Once those are installed, you are ready to download the source:
+```
+git clone --recurse-submodules -b zeus https://github.com/OTTO-project/otto-bsp.git
+```
+
+Once the source is downloaded, you are ready to set up your local build directory and initiate a build:
+```
+MACHINE=otto-proto-v1 DISTRO=otto source setup-environment build
+bitbake otto-image
+```
+Relative to the build folder, your compiled image will be located at
+```
+build/tmp/deploy/images/otto-proto-v1/otto-image-otto-proto-v1.rpi-sdimg
+```
+This image can be imaged to your SD card with the following command (where /dev/sdX is your sdcard), executed from the build folder:
+```
+sudo dd if=tmp/deploy/images/otto-proto-v1/otto-image-otto-proto-v1.rpi-sdimg of=/dev/sdX bs=1M && sync
+```
+
+At this point, the OTTO should be able to boot.
+
+## meta-otto
+
+The otto-bsp repository exists to set up the build environment. The recipes which define the image build are located in the Yocto layer [meta-otto](https://github.com/otto-project/meta-otto)
+
+
+## Connecting to wifi
+
+To connect the OTTO to WiFi over command line:
+
+1. Start connmanctl interactive shell:
+
+```
+connmanctl
+```
+
+2. Enable WiFi and scan for access points. Wait for a response from the program before performing additional commands. Scanning and connecting take some time.
+
+```
+connmanctl> enable wifi
+Enabled wifi
+connmanctl> scan wifi
+Scan completed for wifi
+```
+
+3. List access points and connect to the "service" matching your Wifi SSID. Tab autocomplete works on service names.
+
+```
+connmanctl> services
+  <Your SSID>    wifi_<blahblahblah>_<blahblahblah>_managed_psk
+connmanctl> agent on
+Agent registered
+connmanctl> connect wifi_<blahblahblah>_<blahblahblah>_managed_psk
+Passphrase? <your WiFi passphrase>
+Connected wifi_<blahblahblah>_<blahblahblah>_managed_psk
+```
+
+
+## Using devtool
+
+Devtool is useful for making modifications to some code, cross compiling, then deploying to the target to test without having to recompile the image. Here's how you'd normally use it for something like otto-core:
+
+1. First make sure your bitbake environment is set up and you are in your build folder (see above first if you do not know what this means):
+```
+source setup-environment build
+```
+
+2. Create a local source directory of the recipe you want to modify.
+```
+devtool modify otto-core
+```
+
+3. Modify the source in build/workspace/sources/otto-core
+
+4. Build the source
+```
+devtool build otto-core
+```
+5. Make sure your target system is on and connected to the internet. See [Connecting to WiFi](#connecting-to-wifi) page for more information. You can get the IP address by running
+```
+hostname -i
+```
+from the target.
+
+6. Deploy the application to the target
+```
+devtool deploy-target -s otto-core root@<ip_address>
+``` 
