@@ -22,6 +22,10 @@ export default {
     gray: '#777',
     purple: '#705',
     heading: 'rgb(36, 42, 49)',
+    note: '#24a8f5',
+    noteBackground: '#e7f6ff',
+    warn: '#e63d34',
+    warnBackground: '#ffeceb',
     modes: {
       dark: {
         text: '#d8d8d8',
@@ -34,6 +38,10 @@ export default {
         gray: '#999',
         purple: '#f6c',
         heading: '#f1f1f1',
+        note: '#005688',
+        noteBackground: '#021a33',
+        warn: '#9c150d',
+        warnBackground: '#31100d',
       },
     },
   },
@@ -72,6 +80,50 @@ export default {
     YouTube: {
       borderRadius: '4px',
       overflow: 'hidden',
+    },
+    Note: {
+      borderLeft: 'solid 7px',
+      borderColor: 'note',
+      padding: '10px',
+      borderRadius: '5px',
+      backgroundColor: 'noteBackground',
+      marginBlockEnd: '1em',
+      "&:before": {
+        content: '"👉 Note:"',
+        fontWeight: "bold",
+        marginRight: "0.5em",
+      },
+      "p:first-child": {
+        display: "inline",
+      }
+    },
+    Warning: {
+      borderLeft: 'solid 7px',
+      borderColor: 'warn',
+      padding: '10px',
+      borderRadius: '5px',
+      backgroundColor: 'warnBackground',
+      marginBlockEnd: '1em',
+      "&:before": {
+        content: '"⚠️ Warning:"',
+        fontWeight: "bold",
+        marginRight: "0.5em",
+      },
+      "p:first-child": {
+        display: "inline",
+      }
+    },
+    blockquote: {
+      marginLeft: '0px',
+      borderLeft: 'solid 7px',
+      fontStyle: 'italic',
+      borderColor: 'gray',
+      padding: '10px',
+      marginBlockEnd: '1em',
+      p: {
+        marginBlockStart: '0px',
+        marginBlockEnd: '0px',
+      }
     },
     root: {
       fontFamily: 'body',
@@ -117,6 +169,7 @@ export default {
       fontSize: 1,
     },
     inlineCode: {
+      variant: 'prism',
       fontFamily: 'monospace',
       color: 'text',
       bg: 'muted',
@@ -187,7 +240,7 @@ export default {
       color: 'gray',
     },
     '.comment': {
-      //fontStyle: 'italic',
+      fontStyle: 'italic',
     },
     [[
       '.property',
