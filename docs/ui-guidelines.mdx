@@ -1,0 +1,53 @@
+# OTTO Graphics Design 
+
+This guide lays out some general guidelines for designing graphics for the OTTO. Some things are firm, other things a bit less so. 
+First part of the guide is about the technical side, while the main part of this guide is concerned with design guidelines.
+
+## Technical details
+### Vector Graphics
+We draw everything with vector graphics. This sets the biggest limitations on the kind of graphics we can make. Currently, we are using NanoVG with a wrapper that looks a lot like HTML5 Canvas.
+Exporting designs to Canvas is good and can speed the whole implementation up greatly. Adobe Illustrator can use this script:
+[Pre-compiled plugins](https://blog.mikeswanson.com/ai2canvas) are the easiest to use. (If you want to compile it yourself, [click here.](https://github.com/mikeswanson/Ai2Canvas) ).
+
+Inkscape 1.0 is also getting good at exporting to Canvas.
+
+### Animation
+We use Choreograph to animate the graphics. This means animations should be (fairly) easy to parametrize, since the library just controls the change of single parameters over time. 
+
+
+## Design
+### Basic Design
+The screen resolution is 320*240. The background is black.
+
+### Font
+We use Roboto, medium weight. Fontsizes vary, but it is good to make it a bit bigger than what you would think would be necessary on your computer screen. 
+We are transitioning to the use of ALL CAPS for text.
+
+### Shapes
+We try to keep shapes kind of simple - not least because of the low resolution. Furthermore we try to give everything with a colour some space around it, so it doesn't clash with other coloured elements
+
+### Rounded Corners
+Having rounded corners makes everything look a bit more smooth. There’s not a specific amount that is used, it depends what looks good on the object you’re making. Just try and make sure that nothing looks too ‘sharp’, but everything stays clean and polished/smooth.
+
+### Lines
+Most lines used in OTTO is a 6.0 (pt) thickness line. Thicknesses below 4.0pt is too thin, and we fear that this would be too ‘fragile’ on the display used for the OTTO. Make sure everything keeps having a clean look, not a cluttered mess.
+One other thing worth mentioning is that all lines in Otto have rounded endcaps. 
+
+### Dotted Lines / Grids
+Dotted lines are hard to code. So we prefer to stay away from them if possible. 
+
+### Use of Colour
+With Otto we’re trying to use a default set of colours, to give the style a really continuous feel. Currently these colours are:
+
+**Main colours**
+* Blue - #189CD9
+* Green - #94C11F
+* Yellow - #FBB80B
+* Red - #E5352B
+
+These are used because they correspond to physical encoders on the machine. Also used are varying shades of grey and pink, but they have to work well with the main colours.
+
+### Quirck.
+There are no rules to the amount of quirck in the Otto, really. We try to keep it playful, but functional.
+
+Please feel free to comment or expand on the above in the dicord server!

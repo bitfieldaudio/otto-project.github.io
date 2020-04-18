@@ -1,0 +1,28 @@
+# DSP Overview
+
+DSP for the synthesizer and effects engines for OTTO is mainly done in [Gamma](https://github.com/LancePutnam/Gamma), a C++ library for DSP. Hand-writing DSP code is of course always welcome. If you have other C++ libraries you would like to use, please let us know on the discord server. 
+
+There are two main signal paths in OTTO, which run parallel to each other:
+
+The "Drum path": **Sequencer -> Samplers**
+
+The "Synth path": **Arpeggiator -> Synthesizer**
+
+Furthermore, there are two audio effect slots, that both paths can send to. The external input can also send to these.
+
+The "Drum Path" is still a work-in-progress, so for now we will focus on the "Synth Path" and audio effects.
+
+## Arpeggiators
+These take MIDI input and transform it in some way. This might be as a standard arpeggiator, but it could also be as a chord bank or randomizer or something completely different. Think "MIDI Effects" from Ableton Live.
+They can optionally be bypassed so they just send the unaltered MIDI signal through.
+
+## Synthesizers 
+Synthesizers take MIDI input and output _mono_ audio. They are controlled by our voice allocator, so a synthesizer is defined by defining a single voice of it, which must run independently from the other voices. Of course, it is also possible to do preprocessing for all the voices and post-processing of the summed output of the voices. 
+In general, the only constraint is that individual voices must controlled by the voice allocator. It is possible to do this where each voice is calculated per-sample, of for a full buffer at a time. See the `Goss` and `OTTO.FM` synth for examples.
+
+## Audio effects
+Audio effects take a _mono_ input and returns a _stereo_ output. How much audio signal they get from different elements of OTTO is determined by the `Sends` that is owned by the corresponding element.
+
+### Sends
+Every channel of audio (samplers, synthesizer, external input) goes through a `Sends` object. This determines how much of the audio to send to audio effects 1 and 2, as well as the volume and pan of the dry signal.
+Dry signals and audio effects outputs are then summed and output from OTTO.
