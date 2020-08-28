@@ -1,0 +1,142 @@
+# Compiling and Running OTTO
+OTTO uses a couple of C++20 features, so you need a new compliant C++ compiler. This basically means `clang >= 10.0` or `GCC >= 10.2`. For the same reason, you will need `cmake >= 3.12`.
+
+Please read first the OS specific instructions ( [Linux](#linux), [OSX](#osx) ) on how to install the dependencies, and finally the [Build and run the OTTO](#build) below. We also have some [hints for developers](#developer) and a [Troubleshoot](#troubleshoot) section.
+
+## Linux
+
+You should be able to adapt the debian/ubuntu specific instructions below to your distro. If you do so, feel free to write up a guide and put it here.
+
+### Debian / Ubuntu
+
+1. Install the runtime dependencies.
+   ```shell
+   apt install libasound2-dev libxrandr-dev libxinerama-dev libxcursor-dev libgl1-mesa-dev libxi-dev
+   ```
+
+2. The OTTO requires a very new C++ compiler. If you don't have any of these, google how to get it for your specific distro version.
+   ```shell
+     sudo apt install gcc-10
+   # sudo apt install clang-10
+   ```
+   Remember to set these environment variables to the correct paths, so cmake picks up the right compiler.
+   ```shell
+     export CC=gcc-10 CXX=g++-10
+   # export CC=clang-10 CXX=clang++-10
+   ```
+   Those of course have to be set in every new shell you open, so consider adding them to your `~/.profile`
+
+3. You will also need cmake 3.12 or above.
+    ```shell
+        sudo apt install cmake
+    ```
+    Confirm the version to make sure it is current enough.
+    ```shell
+    cmake --version
+    ```
+
+4. Move on to [build and run the OTTO](#build)
+
+
+## OSX
+
+<Warning>This info might be outdated!</Warning>
+
+On OSX, you need at least clang 9, with its corresponding `libc++` implementation. You can install it from source, or using a package manager like [homebrew](https://brew.sh/) or [macports](https://www.macports.org/).
+
+
+### Get dependencies using Homebrew
+
+Open a terminal and run the following commands:
+
+1. install homebrew:
+   ```shell
+   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+   ```
+
+2. If not already installed, install XCode's command tools:
+   ```shell
+   xcode-select --install
+   ```
+
+3. install the dependencies and prepare your environment:
+   ```shell
+   # Install dependencies (cmake 3.12+ and clang 9 and git)
+   brew install llvm cmake git
+
+   # add llvm/clang to your PATH:
+   echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> ~/.bash_profile
+
+   # Use these exports on every new shell you want to compile OTTO (or add them to your ~/.bash_profile)
+   export CC=clang
+   export CXX=clang++
+   export CXXFLAGS="-I/usr/local/opt/llvm/include -I/usr/local/include"
+   export LDFLAGS="-L/usr/local/lib $(brew info llvm | grep LDFLAGS= | cut -d = -f 2 | tr '"' ' ' | head -1 )"
+
+   # To confirm that you've exported these variables correctly, call
+   $CXX --version
+
+   # You should see something like clang version 9.x.x
+   ```
+5. Move on to [build and run the OTTO](#build)
+
+## Windows
+
+OTTO can be built on Windows under WSL2. It is not so useful for testing on the PC, since audio support is still quite lacking on WSL2. But other than that, it is tested to be compiling on Ubuntu 20.04 in WSL2. If you succeed in getting audio to work, please let us know!
+
+# Build and run the OTTO (for all OS')
+
+1. Clone the OTTO repo to your local drive:
+   ```shell
+   git clone https://github.com/otto-project/OTTO
+   cd OTTO
+   ```
+
+2. Configure the build:
+   the following command will print a lot of lines. If your setup is correct you should see a line with `The CXX compiler identification is Clang X.X.X.X ` or similar.
+   You can pass a couple of configure options to cmake, to see a list, run `cmake -LH`. For example, to disable the debug ui, configure otto with `cmake .. -DOTTO_DEBUG_UI=OFF`
+   ```shell
+   mkdir build
+   cd build
+   cmake ..
+   cd ..
+   ```
+
+3. Build
+   If cmake ran correctly, you should now be able to simply run 
+   ```shell
+   cmake --build build
+   ```
+
+4. Start OTTO in the root of the git clone. In case you compiled OTTO in another directory (f.ex. build), make sure you still run it from the root of the clone, since it depends on the `data` folder at runtime.
+   ```shell
+   build/bin/otto
+   ```
+
+# <a name="developer"></a> Hints for developers
+
+1. To run the test set:
+   ```shell
+   build/bin/test
+   ```
+
+2. To recompile OTTO:
+   Normally it's enough to run `cmake --build build` again, but sometimes (for example when you add new files) you have to run `cmake ..` from `build` again. When you do so, make sure the correct environment variables are set. If something has really gone wrong with cmake, you can clear its cache by running 
+   ```shell
+   rm -rf build/CMakeFiles build/CMakeCache.txt
+   ```
+
+# <a href name="troubleshoot"></a> Troubleshoot
+
+## Linux
+
+1. Error `GLX: Failed to create context: GLXBadFBConfig`:
+   Check the OpenGL Version your driver supports with `glxinfo | grep version`. You will see an output similar to:
+   ```shell
+   server glx version string: 1.4
+   client glx version string: 1.4
+   GLX version: 1.4
+   OpenGL version string: 2.1 Mesa 10.1.3
+   OpenGL shading language version string: 1.20
+   ```
+   Here the supported OpenGL version is 2.1. The current OTTO graphics implementation needs an OpenGL Version of 3.3 or more. Try to update your graphic card driver.
