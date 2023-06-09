@@ -18,7 +18,7 @@
     "@theme-ui/presets": "0.2.44",
     "@theme-ui/prism": "0.2.46",
     "@theme-ui/sidenav": "0.2.46",
-    "gatsby": "2.15.29",
+    "gatsby": "4.25.7",
     "gatsby-plugin-mdx": "1.0.47",
     "gatsby-plugin-prefetch-google-fonts": "^1.4.3",
     "gatsby-plugin-react-helmet": "3.1.10",
@@ -43,7 +43,7 @@
     "theme-ui": "0.2.46"
   },
   "devDependencies": {
-    "gatsby": "2.15.29",
+    "gatsby": "4.25.7",
     "gh-pages": "^2.1.1",
     "react": "16.10.2",
     "react-dom": "16.10.2"
